@@ -6,53 +6,65 @@ class Peserta(val nama: String)
 class Instruktur(val nama: String)
 
 class KelasKursus(
-    val namaKelas: String,
-    private val kapasitasMax: Int,
+    var namaKelas: String,
+    private var kapasitasMax: Int,
     val instruktur: Instruktur
 ) {
     // Enkapsulasi
     private val daftarPeserta = mutableListOf<Peserta>()
 
+    // Method daftar dengan validasi
     fun daftar(peserta: Peserta) {
         if (daftarPeserta.size >= kapasitasMax) {
             println("❌ PENDAFTARAN DITOLAK: Kelas '$namaKelas' sudah penuh!")
         } else {
             daftarPeserta.add(peserta)
-            println("✅ PENDAFTARAN BERHASIL: ${peserta.nama} masuk ke kelas '$namaKelas'")
+            println("✅ ${peserta.nama} berhasil masuk ke kelas '$namaKelas'")
         }
     }
 
+    // Tampilkan siswa aktif
     fun tampilkanPeserta() {
         println("\n=== DAFTAR SISWA AKTIF ===")
+        println("Jumlah: ${daftarPeserta.size} orang")
         if (daftarPeserta.isEmpty()) {
             println("Belum ada peserta.")
         } else {
-            for (p in daftarPeserta) {
-                println("- ${p.nama}")
+            daftarPeserta.forEach {
+                println("- ${it.nama}")
             }
         }
     }
 }
 
-// ===== MAIN PROGRAM =====
+// ===== MAIN =====
 fun main() {
     val input = Scanner(System.`in`)
 
-    val instruktur = Instruktur("Pak Budi")
-    val kelas = KelasKursus("Kotlin Dasar", 2, instruktur)
+    println("=== SETUP KELAS ===")
 
-    println("=== SISTEM PENDAFTARAN E-COURSE ===")
-    println("Instruktur: ${instruktur.nama}")
-    println("Kelas: ${kelas.namaKelas}")
-    println("Kapasitas Maksimal: 2 orang\n")
+    // Input nama kelas
+    print("Masukkan nama kelas: ")
+    val namaKelas = input.nextLine()
+
+    // Input kapasitas
+    print("Masukkan kapasitas maksimal peserta: ")
+    val kapasitas = input.nextLine().toInt()
+
+    // Input instruktur
+    print("Masukkan nama instruktur: ")
+    val namaInstruktur = input.nextLine()
+
+    val instruktur = Instruktur(namaInstruktur)
+    val kelas = KelasKursus(namaKelas, kapasitas, instruktur)
+
+    println("\n=== PENDAFTARAN PESERTA ===")
 
     while (true) {
-        print("Masukkan nama peserta (ketik 'exit' untuk berhenti): ")
+        print("Masukkan nama peserta (ketik 'exit' untuk selesai): ")
         val nama = input.nextLine()
 
-        if (nama.lowercase() == "exit") {
-            break
-        }
+        if (nama.lowercase() == "exit") break
 
         val peserta = Peserta(nama)
         kelas.daftar(peserta)

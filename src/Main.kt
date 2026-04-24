@@ -21,12 +21,31 @@ class KelasKursus(
             daftarPeserta.add(peserta)
             println("✅ ${peserta.nama} berhasil masuk ke kelas '$namaKelas'")
         }
+
+        // Tampilkan status setelah setiap pendaftaran
+        tampilkanStatusKelas()
+    }
+
+    // Menampilkan status kelas (FITUR BARU)
+    fun tampilkanStatusKelas() {
+        val jumlahAktif = daftarPeserta.size
+        val sisa = kapasitasMax - jumlahAktif
+
+        println("📊 Status Kelas: $jumlahAktif / $kapasitasMax peserta")
+
+        if (sisa > 0) {
+            println("🟢 Slot tersisa: $sisa")
+        } else {
+            println("🔴 Kelas sudah penuh!")
+        }
+        println("----------------------------------")
     }
 
     // Tampilkan siswa aktif
     fun tampilkanPeserta() {
         println("\n=== DAFTAR SISWA AKTIF ===")
-        println("Jumlah: ${daftarPeserta.size} orang")
+        println("Jumlah: ${daftarPeserta.size} / $kapasitasMax")
+
         if (daftarPeserta.isEmpty()) {
             println("Belum ada peserta.")
         } else {
@@ -43,15 +62,12 @@ fun main() {
 
     println("=== SETUP KELAS ===")
 
-    // Input nama kelas
     print("Masukkan nama kelas: ")
     val namaKelas = input.nextLine()
 
-    // Input kapasitas
     print("Masukkan kapasitas maksimal peserta: ")
     val kapasitas = input.nextLine().toInt()
 
-    // Input instruktur
     print("Masukkan nama instruktur: ")
     val namaInstruktur = input.nextLine()
 
